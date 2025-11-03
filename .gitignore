@@ -1,0 +1,14 @@
+Environment files
+
+.env
+
+Firebase Key (JSON)
+
+*.json
+
+PyCharm/Python local files
+
+pycache/
+.idea/
+.DS_Store
+venv/
