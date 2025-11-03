@@ -8,6 +8,8 @@ import sys
 import traceback
 import aiofiles
 import asyncio
+from dotenv import load_dotenv
+from keep_alive import keep_alive
 
 
 # --- Firebase & Bot Initialization ---
@@ -386,6 +388,7 @@ async def listgames(interaction: discord.Interaction):
 
 def main():
     """The main entry point for the bot."""
+    load_dotenv() # Load variables from .env file
 
     if not all([config.DISCORD_BOT_TOKEN, config.GUILD_ID, config.FIREBASE_SERVICE_ACCOUNT_PATH, db]):
         print("--- CONFIGURATION ERROR ---")
@@ -398,6 +401,7 @@ def main():
 
     try:
         print("Attempting to log in to Discord...")
+        keep_alive() # Start web server thread for UptimeRobot
         client.run(config.DISCORD_BOT_TOKEN)
 
     except discord.LoginFailure:
