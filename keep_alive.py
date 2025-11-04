@@ -1,20 +1,26 @@
-    from flask import Flask
-    from threading import Thread
+from flask import Flask
+from threading import Thread
+import logging
 
-    # Set up a tiny Flask server to listen for pings from UptimeRobot
-    app = Flask('')
+# Disable default Flask logging to keep the console clean
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
-    @app.route('/')
-    def home():
-        # This message confirms the server is running when UptimeRobot pings it
-        return "LFG Bot is Alive!"
+app = Flask('')
 
-    def run():
-      # Host the server on 0.0.0.0 (all interfaces) and port 8080 (Replit default)
-      app.run(host='0.0.0.0', port=8080)
+@app.route('/')
+def home():
+    """Simple health check endpoint."""
+    return "LFG Bot is running!"
 
-    def keep_alive():
-      # Run the server in a separate thread so it doesn't block the main bot
-      t = Thread(target=run)
-      t.start()
+def run():
+    """Runs the Flask server."""
+    # Host on 0.0.0.0 for external access (needed for Replit/Railway)
+    app.run(host='0.0.0.0', port=8080) 
+
+def keep_alive():
+    """Starts the Flask server in a separate thread."""
+    t = Thread(target=run)
+    t.start()
+    print("Keep-alive server started on port 8080.")
     
